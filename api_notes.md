@@ -17,25 +17,29 @@ three components:
 - specifically for lua
 - access via vim.* not mentioned already
 
-## execute lua code inside nvim
+## execute lua code inside nvim - basic
 
 ```
-:lua _some_lua_code_
-:lua print("hello")
+:lua some_lua_code
 ```
 
-each `:lua` call has its own scope
-so previously defined `local` variables won't work
+- each `:lua` call has its own scope
+- previously defined global variables will work, but `local` ones won't
 
+the second `:lua` can't see the `a` definition
 ```
 :lua local a=1
 :lua print(a)
 ```
-the second `:lua` can't see the `a` definition
 
-check value of variable or table
+check value of lua variable or table
 ```
 :lua =some_var
+```
+
+check value of vimscript variable
+```
+:lua =vim.g.some_var
 ```
 
 run lua script from an external file
@@ -46,16 +50,19 @@ use vim's source command
 
 ## access vim commands in a lua script
 
-remember:
 - use `:lua` to use any of these directly in nvim command line
-- escape special characters in strings
+- escape special characters in strings unless using `[[..]]`
+
+### method 1: pass entire command as one string
 
 ```
+vim.cmd("commandname arg1 arg2") 
+
 vim.cmd("colorscheme habamax") or
 vim.cmd([[colorscheme habamax]])
 ```
 
-use [[..]] to run multiple vim commands at once
+can use `[[..]]` to execute multiple vim commands at once
 ```
 vim.cmd([[
   highlight Error guibg=red
@@ -63,11 +70,14 @@ vim.cmd([[
 ]])
 ```
 
-can also use `vim.cmd.commandname(arguments)` to achieve the above:
-```
-vim.cmd.commandname("just_one_arg")
-vim.cmd.commandname({"arg1", "arg2", "arg3"})
+### method 2: pass only the args as strings
 
+```
+vim.cmd.commandname("just_one_arg") // pass single arg as string
+vim.cmd.commandname({"arg1", "arg2"}) // pass multi args as table of strings 
+```
+
+```
 vim.cmd.colorscheme("habamax")
 vim.cmd.highlight({"Error", "guibg=red"})
 vim.cmd.highlight({"link", "Warning", "Error"})
@@ -75,13 +85,130 @@ vim.cmd.highlight({"link", "Warning", "Error"})
 
 ## access vimscript functions in a lua script
 
-remember to use `:lua` to use any of these directly in nvim command line
+```
+vim.fn.functionname(arg1, arg2, ...)
+```
 
+- works with built-in or user-defined
+- use `:lua` to use this directly in nvim command line
 
+- to access lua variables, reference them directly
+- to access vimscript variables, use `vim.g...` etc 
 
+```
+lower = "a_string"
+upper = vim.fn.toupper(lower)
+print(vim.fn.printf('%s to %s', lower, upper)
 
+vim.g.var = "15"
+print(vim.g.var)
+```
 
+## write a lua function
 
+- can also be passed into a vimscript function
+
+```
+local function func_name(arg1, arg2, ...)
+  // lua code here
+end
+```
+
+## set and get vimscript variables in lua
+
+```
+lua wrapper     scope
+
+vim.g           global
+vim.b           current buffer
+vim.w           current window
+vim.t           current tab
+vim.v           predefined vimscript variables
+vim.env         environment vars defined in this editor session
+
+```
+
+target specific buffers/windows/tabs
+```
+vim.b[2].myvar = 20         // set myvar for buffer 2
+
+print(vim.b[2].varname)     // get myvar for buffer 2
+
+```
+
+reference vimscript variable names that are invalid for identifiers in lua
+```
+vim.g['mystuff#var'] = 1    // the # is invalid
+```
+
+cannot directly change fields of a vimscript array var
+must assign it to a lua table, then change the table
+then assign it back to the vimscript var
+
+delete vimscript variable
+```
+vim.g.myvar = nil           // set it to nil
+```
+
+## set and get vim options with Lua
+
+### method 1: vim.opt
+
+```
+vim.opt             same as :set
+vim.opt global      same as :setglobal
+vim.opt local       same as :setlocal
+```
+
+```
+vim.opt.smarttab = true     same as :set smarttab
+vim.opt.smarttab = false    same as :set nosmarttab
+```
+
+can use list/map/set-like assignments
+```
+vim.opt.wildignore = {'*.o', '*.a'} // :set wildignore=*.o,*.a
+
+vim.opt.listchars = {space = '_', tab = '>~'} // :set listchars=space:_,tab:>~
+
+vim.opt.formatoptions = { n = true, j = true} // :set formatoptions=nj
+```
+
+to get values, must use :get()
+```
+print(vim.opt.smarttab) // won't work; outputs hex address
+
+print(vim.opt.smarttab:get())
+```
+
+### method 2: vim.o
+
+```
+vim.o       same as :set
+vim.go      same as :setglobal
+vim.bo      buffer-scoped options
+vim.wo      window-scoped options
+```
+
+can get values directly
+```
+print(vim.o.smarttab)
+```
+
+can target specific buffers or windows
+```
+vim.bo[4].expandtab = true  // set
+
+print(vim.bo[4].expandtab)  // get
+```
+
+## key mappings
+
+- can map to either vim commands or lua functions
+- specify mode, keys, command/function
+```
+vim.keymap.set('n', '<Leader>a', '  
+```
 
 
 
