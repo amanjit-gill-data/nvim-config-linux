@@ -17,7 +17,7 @@ three components:
 - specifically for lua
 - access via vim.* not mentioned already
 
-## execute lua code inside nvim - basic
+## execute lua code inside nvim
 
 ```
 :lua some_lua_code
@@ -202,21 +202,147 @@ vim.bo[4].expandtab = true  // set
 print(vim.bo[4].expandtab)  // get
 ```
 
-## key mappings
+## set key mappings with lua
 
-- can map to either vim commands or lua functions
-- specify mode, keys, command/function
+- can map to vim command, lua function or key combination
+
+specify:
+- mode(s) as string or table of strings
+- keys as string 
+- vim command as string / lua function directly / keys as string
+- optional fourth arg (buffer/silent/expr/desc/remap)
+
 ```
-vim.keymap.set('n', '<Leader>a', '  
+vim.keymap.set('n', '<Leader>j', 'gj')
+// in normal mode, map '<Leader>j' to 'gj'
+
+vim.keymap.set({'n', 'c'}, '<Leader>j', 'gj')
+// in normal and command modes
+
+vim.keymap.set('n', '<Leader>j', '<cmd>echo "hello"<cr>')
+// map to vim command
+
+vim.keymap.set('n', '<Leader>j', vim.treesitter.start)
+// map to lua func without arguments
+
+vim.keymap.set('n', '<Leader>j', function() print('hello') end)
+// map to lua func with arguments must have `function()` and `end`
 ```
 
+### delete a mapping
 
+```
+vim.keymap.del(mode/s, keys)
 
+vim.keymap.del('n', '<Leader>j')
+```
 
+### use key mapping to load plugins
 
+```
+vim.keymap.set('n', '<Leader>a', require('pluginname').action)
+// loads plugin when key mapping is _defined_, not when it's used
 
+vim.keymap.set('n', '<Leader>a', function() require('pluginname').action() end)
+// loads plugin only when mapping is executed
 
+```
 
+## write an autocommand using lua
 
+must specify:
+- event as string or table of strings
+- opts as table with keys
 
+optional:
+- pattern as filetype string / table of strings, OR buffer as integer
+- command as string, OR callback as lua function 
+
+```
+vim.api.nvim_create_autocmd("BufEnter", {
+  pattern = {".c", ".h"},
+  command = "echo 'Entering a c file'"
+})
+
+vim.api.nvim_create_autocmd("Yankee", {
+  callback = function() vim.highlight.on_yank() end
+})
+
+```
+
+## group autocommands with lua
+
+- can reuse in different files
+
+step 1. define the overarching group 
+
+specify:
+- group name
+- whether or not to clear group if it already exists
+
+```
+local tab_group = vim.api.nvim_create_augroup('tab_settings', {clear = true})
+```
+
+step 2. define each autocmd in the group
+in this example, the group tab_group has two autocmds
+
+```
+vim.api.nvim_create_autocmd({'BufNewFile', 'BufRead'}, {
+  pattern = '*.py',
+  group = tab_group, // or 'tab_settings'
+  command = 'set shiftwidth=4',
+})
+
+vim.api.nvim_create_autocmd({'BufNewFile', 'BufRead'}, {
+  pattern = '*.py',
+  group = tab_group, // or 'tab_settings'
+  command = 'set expandtab',
+})
+```
+
+### delete an autocommand
+
+```
+// Delete all autocmds for the given event(s)
+vim.api.nvim_clear_autocmds({event = {"BufEnter", "InsertLeave"}})
+
+// Delete all autocmds for the given event, but only in the given buffer
+vim.api.nvim_clear_autocmds({event = "ColorScheme", buffer = 0})
+
+// Delete all autocmds for a given filetype pattern
+vim.api.nvim_clear_autocmds({pattern = "*.py"})
+
+// Delete all autocommands in a given group
+vim.api.nvim_clear_autocmds({group = "scala"})
+```
+
+## write a user command in lua
+
+specify:
+- command name with uppercase letter, as a string
+- vim commands or lua functions to execute, as a string
+- command attributes, as a table (desc/force/preview); may be empty
+
+```
+vim.api.nvim_create_user_command('Test', 'echo "hello"', {})
+```
+
+run the user command
+```
+vim.cmd.Test()
+```
+
+create a user command specific to a buffer
+```
+vim.api.nvim_buf_create_user_command(3, 'Test', 'echo "hello"', {})
+// specific to buffer 3
+```
+
+### delete a user command
+```
+vim.api.nvim_del_user_command('Upper')          
+
+vim.api.nvim_buf_del_user_command(4, 'Upper')   // specific to buffer 4
+```
 
