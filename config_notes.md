@@ -1,5 +1,8 @@
 # notes on neovim config 
 
+these are just my rough notes, taken from the neovim documentation, on how neovim searches for and loads config files
+
+
 ## arguments
 
 nvim _file1_ _file2_ _file3_
@@ -33,15 +36,15 @@ $XDG_CONFIG_HOME
   ~/AppData/Local
 
 runtimepath
-  $XDG_CONFIG_HOME/nvim                     
-  $XDG_CONFIG_DIRS[1,2,...]/nvim            - not defined
-  $XDG_DATA_HOME/nvim[-data]/site           - not defined
-  $XDG_DATA_DIRS[1,2,...]/nvim/site         - not defined
-  $VIMRUNTIME
-  $XDG_DATA_DIRS[1,2,...]/nvim/site/after   - not defined 
-  $XDG_DATA_HOME/nvim[-data]/site/after     - not defined
-  $XDG_CONFIG_DIRS[1,2,...]/nvim/after      - not defined 
-  $XDG_CONFIG_HOME/nvim/after
+- $XDG_CONFIG_HOME/nvim                     
+- $XDG_CONFIG_DIRS[1,2,...]/nvim            - not defined
+- $XDG_DATA_HOME/nvim[-data]/site           - not defined
+- $XDG_DATA_DIRS[1,2,...]/nvim/site         - not defined
+- $VIMRUNTIME
+- $XDG_DATA_DIRS[1,2,...]/nvim/site/after   - not defined 
+- $XDG_DATA_HOME/nvim[-data]/site/after     - not defined
+- $XDG_CONFIG_DIRS[1,2,...]/nvim/after      - not defined 
+- $XDG_CONFIG_HOME/nvim/after
 
 ## relevant functions or commands
 

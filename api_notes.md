@@ -1,5 +1,8 @@
 # Neovim API for Lua
 
+these are notes on how to use lua with neovim
+i've taken them from the url given below, but skipped over things i probably won't use just yet.
+
 <https://neovim.io/doc/user/lua-guide.html>
 
 three components:
