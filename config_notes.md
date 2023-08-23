@@ -16,23 +16,23 @@ nvim --startuptime _logfile_
 ## relevant variables
 
 $EXINIT
-> not defined 
+- not defined 
 
 $VIM
-    C:/Program Files/Neovim/share/nvim 
+- C:/Program Files/Neovim/share/nvim 
 
 $VIMINIT
-    not defined 
+- not defined 
 
 $VIMRUNTIME
-    C:/Program Files/Neovim/share/nvim/runtime
+- C:/Program Files/Neovim/share/nvim/runtime
 
 $XDG_CONFIG_DIRS
-    list of dirs
-    not defined 
+- list of dirs
+- not defined 
 
 $XDG_CONFIG_HOME
-    ~/AppData/Local
+- ~/AppData/Local
 
 runtimepath
 - $XDG_CONFIG_HOME/nvim                     
@@ -48,14 +48,14 @@ runtimepath
 ## relevant functions or commands
 
 require()
-  loads and executes file
-  avoids executing file twice
+- loads and executes file
+- avoids executing file twice
 
 :runtime! {file}
-  sources _all_ occurrences of {file} in runtimepath 
+- sources _all_ occurrences of {file} in runtimepath 
 
-:echo rtp
-  
+:echo &rtp
+- prints out runtimepath
 
 ## initialisation
 
@@ -87,8 +87,9 @@ require()
     - source .vim files in alpha order
     - then source .lua files in alpha order
 
-10. load packages (I have none)
-  - these are plugins located in each 'start' dir of 'packpath'
+10. load packages 
+  - these contain plugins located in each 'start' dir of 'packpath'
+  - packpath default value is same as runtimepath
 
 11. source the files in the '*after' dirs 
 
@@ -141,7 +142,27 @@ end
 - $VIMRUNTIME/macros
 - $VIM/vimfiles/pack/dist/opt
 - $VIMRUNTIME/plugin
-- add new ones to plugin/, somewhere in runtimepath
+- can add new ones to plugin/, somewhere in runtimepath
+- can also put them into a package, which is what packer does
+
+### packages
+
+<https://neovim.io/doc/user/repeat.html#packages>
+
+a package is just a directory that contains plugins
+packages are found in pack/, somewhere in runtimepath
+
+- pack/packagename/start contains plugins to load at startup
+- pack/packagename/opt contains plugins to load on demand using :packadd
+
+how packer handles plugins:
+
+- packer creates one package, called packer, at 
+~/AppData/Local/nvim-data/site/pack/packer
+
+- as required by neovim, this package contains start/ and /opt directories
+
+- when i add a plugin, packer puts it into packer/start 
 
 ## planning for new config 
 
@@ -149,7 +170,66 @@ move filetype-specific plugins into ftplugin
 
 implement lazy-loading where possible
 
-try installing plugins without a plugin manager like packer 
+install plugins without a plugin manager like packer 
 packer seems to use a lot of startup time 
+
+### structure
+
+for lua config files:
+
+XDG_CONFIG_HOME/nvim/ 
+|-- init.lua 
+|-- plugin_manager.sh   <- to add new plugins and periodically update them
+|-- plugin/
+|   |-- these configs are automatically loaded
+|   |-- i'll put plugin configs here
+|-- lua/
+|   |-- these configs need to be required by init.lua
+|   |-- i'll put general configs here
+
+for plugins:
+
+- runtimepath includes XDG_DATA_HOME/nvim-data/site
+- XDG_DATA_HOME is not defined 
+- so if i set XDG_DATA_HOME to ~/AppData/Local,
+- and put a package into ~/AppData/Local/nvim-data/site/pack/,
+- then neovim will find the package and load the plugins it contains
+
+XDG_DATA_HOME/nvim-data/site/pack/
+|-- package_name/
+|   |-- start/              <- for startup plugins
+|   |   |-- plugin_dir1/    <- each plugin goes into its own folder
+|   |   |-- plugin_dir2/
+|   |-- opt/                <- for on-demand plugins
+|   |   |-- plugin_dir1/    <- each plugin goes into its own folder
+|   |   |-- plugin_dir2/
+
+i'll have two packages:
+- one for 'third party' plugins i obtain from others
+- one for plugins i write myself
+
+- each plugin_dir is a git repo so i can easily update it 
+- i can use a bash script to update all the third-party plugins
+- for my own plugins, i can maintain those git repos myself
+
+### using git to manage plugins
+
+create plugin_manager.sh in XDG_CONFIG_HOME/nvim
+
+to add a new plugin:
+
+```
+./plugin_manager add <plugin_name> [--opt]
+```
+- by default, install into start/
+- can optionally specify opt/
+
+to update a plugin:
+
+```
+./plugin_manager update [plugin_name]...  
+```
+- by default, update all plugins
+- can optionally specify one or more plugins
 
 
