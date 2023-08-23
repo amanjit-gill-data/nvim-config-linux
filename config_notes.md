@@ -16,7 +16,7 @@ nvim --startuptime _logfile_
 ## relevant variables
 
 $EXINIT
-    not defined 
+> not defined 
 
 $VIM
     C:/Program Files/Neovim/share/nvim 
