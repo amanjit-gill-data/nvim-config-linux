@@ -2,7 +2,6 @@
 
 these are just my rough notes, taken from the neovim documentation, on how neovim searches for and loads config files
 
-
 ## arguments
 
 nvim _file1_ _file2_ _file3_
@@ -17,23 +16,23 @@ nvim --startuptime _logfile_
 ## relevant variables
 
 $EXINIT
-  not defined 
+    not defined 
 
 $VIM
-  C:/Program Files/Neovim/share/nvim 
+    C:/Program Files/Neovim/share/nvim 
 
 $VIMINIT
-  not defined 
+    not defined 
 
 $VIMRUNTIME
-  C:/Program Files/Neovim/share/nvim 
+    C:/Program Files/Neovim/share/nvim/runtime
 
 $XDG_CONFIG_DIRS
-  list of dirs
-  not defined 
+    list of dirs
+    not defined 
 
 $XDG_CONFIG_HOME
-  ~/AppData/Local
+    ~/AppData/Local
 
 runtimepath
 - $XDG_CONFIG_HOME/nvim                     
@@ -54,6 +53,9 @@ require()
 
 :runtime! {file}
   sources _all_ occurrences of {file} in runtimepath 
+
+:echo rtp
+  
 
 ## initialisation
 
@@ -132,74 +134,14 @@ else
   some_module.function()
 end
 
-## what the startup log reveals
+## types of plugins
+<https://neovim.io/doc/user/usr_05.html#add-plugin>
 
-source ftplugin.vim and indent.vim
-
-require various packer files
-require my setup_plugins.lua
-require my core.options
-
-require nightfly
-source nightfly.vim from packer dirs
-
-require my core.colours
-require vim.keymap
-require my core.keymaps
-
-require various Comment files 
-require my plugin.comment 
-
-require various nvim-tree files 
-require vim.F 
-require vim.diagnostic 
-require nvim-tree 
-
-require nvim-web-devicons
-require my plugin.nvim-tree 
-
-require various lualine files 
-require my plugin.lualine 
-
-require various gitsigns files 
-require gitsigns 
-require my plugin.gitsigns 
-
-require my plugin.slime
-require my plugin.nvim-r 
-
-require various cmp files 
-require various luasnip files 
-require my plugin.nvim-cmp
-
-require various mason and lsp files 
-require my plugin.lsp.mason 
-require more lsp files 
-require my plugin.lsp.lspconfig 
-
-source my init.lua
-source vimrc files from Program files
-- including packer/start/Nvim-R/ftdetect/r.vim 
-
-require various nvim-autopairs files 
-source my lua files in plugin/
-- autopairs 
-- comment 
-- gitsigns 
-- lspconfig 
-- mason 
-- lualine
-- nvim-cmp
-- nvim-r 
-- nvim-tree 
-
-require various treesitter files 
-source my plugin/nvim-treesitter.lua 
-source my plugin/packer-compiled.lua
-source my plugin/slime.lua
-
-source files from packer/start/
-source 'after' files from packer/start/
+1. global:
+- $VIMRUNTIME/macros
+- $VIM/vimfiles/pack/dist/opt
+- $VIMRUNTIME/plugin
+- add new ones to plugin/, somewhere in runtimepath
 
 ## planning for new config 
 

@@ -17,7 +17,7 @@ opt.colorcolumn = "80"
 opt.termguicolors = true
 opt.background = "dark"
 
--- force nvim to use system clipboard
+-- use system clipboard
 opt.clipboard:append("unnamedplus")
 
 -- where to put split windows
