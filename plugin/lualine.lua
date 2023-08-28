@@ -21,8 +21,7 @@ nightfly.normal.a.bg = new_colours.blue
 nightfly.insert.a.bg = new_colours.green
 nightfly.visual.a.bg = new_colours.violet
 
--- the code for command mode is different because lualine doesn't have a 
--- setting for it, so I define it myself
+-- lualine doesn't have a config for command mode, so I define it myself
 nightfly.command = {
   a = {
     gui = "bold",

@@ -123,7 +123,61 @@ echo "$a"   hello goodbye   reference with double quotes works
 echo '$a'   $a              reference with single quotes _doesn't_ work
 ```
 
+## comparison with variable
 
+if an empty string value would make a comparison invalid, then use quotes 
+
+example:
+
+```
+if ["$a" = "hello"]; then
+  echo something
+fi
+```
+need quotes around `$a`
+otherwise, if `$a` is empty, the test will be `[ = "hello"]`, which is invalid
+no need for quotes around `hello` though
+
+## variable concatenation
+
+option 1. put each variable in its own quotes
+
+```
+a=hello
+b=goodbye
+
+value="$a"something"$b"
+echo $value
+```
+
+option 2. put each variable name in curly braces, _not_ including the `$`
+
+if there are spaces, use quotes
+```
+a=hello
+b=goodbye
+
+value=${a}something${b}   
+echo $value
+```
+
+## command substitution
+
+use `\` \`` or `$( )` to replace a command with its output 
+
+```
+`some_command` OR $(some_command)
+
+var=`some_command` OR var=$(some_command)
+```
+
+example:
+```
+command             output      notes
+echo expr 5 + 6       expr 5+6    prints literally; doesn't evaluate command
+echo "expr 5 + 6"     expr 5+6    prints literally; doesn't evaluate command
+echo `expr 5 + 6`     11          evaluates command
+```
 
 
 
