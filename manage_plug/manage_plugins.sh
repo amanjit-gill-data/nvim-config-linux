@@ -3,21 +3,7 @@
 package_path="$HOME/AppData/Local/nvim-data/site/pack/third_party/"
 log_file="./pluglog"
 
-# $1 = repo url
-get_dir_name() {
-
-  local repo_name=`cut -d / -f 5 <<< $1`  # repo.git
-
-  local end_cut=${#repo_name}             # last index of ".git"
-  local start_cut=`expr $end_cut - 3`     # first index of ".git"
-
-  # dir name = cut the ".git" from repo.git
-  local dir_name=`cut -c $start_cut-$end_cut --complement <<< $repo_name`
-  
-  echo $dir_name
-}
-
-# $1 = repo url
+# $1 = repo_url
 # $2 = --opt|nothing
 add_plugin() {
 
@@ -33,24 +19,49 @@ add_plugin() {
   
   fi
 
-  local dir=`get_dir_name $1`
+  local dir=`basename $1 .git`
   echo -n Installing into ${plugin_type}${dir}...
   echo `date` Install $dir into $plugin_type >> $log_file
   git clone $1 $package_path$plugin_type$dir &>> $log_file
   echo " done."
 } 
 
-# $1 = repo directory name
+# $1 = repo_dir
+# $2 = --opt|nothing
 remove_plugin() {
-  echo you chose remove  
+
+  if [ "$2" = "--opt" ]; then
+    local plugin_type=opt/
+
+  elif [ -z $2 ]; then
+    local plugin_type=start/
+
+  else
+    echo $2 is not a valid option
+    exit 1
+  
+  fi
+
+  echo -n Removing ${plugin_type}$1...
+  echo `date` Remove $1 from $plugin_type >> $log_file
+  rm -R -f $package_path$plugin_type$1 &>> $log_file
+  echo " done."
 }
 
+# $1 = repo_dir|nothing
 update_plugins() {
-  echo you chose update
+
+  if [ -z $1 ]; then
+    echo loop through all directories
+
+  else
+    echo just update $1
+
+  fi
 }
 
-# $1 = add|update
-# $2 = repo url
+# $1 = add|remove|update
+# $2 = repo_url|repo_dir  
 # $3 = --opt|nothing
 case $1 in
 
@@ -58,13 +69,13 @@ case $1 in
     add_plugin $2 $3;;
 
   remove)
-    echo you chose remove;;
+    remove_plugin $2 $3;;
   
   update)
-    echo you chose update;;
+    update_plugins $2;;
 
   *)
-    echo no valid option chosen;;
+    echo -e "$1 is not a valid option.\nValid options are add|remove|update.";;
 esac
 
 
