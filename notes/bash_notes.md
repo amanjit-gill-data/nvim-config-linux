@@ -2,13 +2,20 @@
 
 ## echo
 
-### findings
+### general notes
+
+use -e to escape characters
+use -n to _not_ include newline at end of echoed text
+
+### experiment on using quotes
+
+#### findings
 
 regardless of spaces or variable references:
 - can use no quotes OR double quotes for var OR double quotes for entire phrase
 - single quotes always print variable reference literally
 
-### experiment
+#### experiment
 
 ```
 command                 output          notes
@@ -28,7 +35,18 @@ echo 'I said $a'        I said $a
 
 ## variable assignments and references
 
-### findings
+### general notes
+
+for `~` to expand to home dir, don't put it in quotes, or use $HOME instead
+```
+dir=~/"etc/etc/etc/"
+
+dir="$HOME/etc/etc/etc"
+```
+
+### experiment on using quotes
+
+#### findings
 
 for variable assignment:
 - if no spaces, can use no quotes / single / double
@@ -38,9 +56,9 @@ for variable reference:
 - regardless of spaces, <u>must</u> use no quotes / double quotes
 - single quotes always print the variable reference literally
 
-### experiment
+#### experiment
 
-#### variable without spaces
+##### variable without spaces
 
 1. effect of quotes in variable assignment
 
@@ -80,7 +98,7 @@ echo "$a"   hello           reference with double quotes works
 echo '$a'   $a              reference with single quotes _doesn't_ work
 
 ```
-#### variable with spaces
+##### variable with spaces
 
 1. effect of quotes in variable assignment
 
@@ -152,7 +170,7 @@ echo $value
 
 option 2. put each variable name in curly braces, _not_ including the `$`
 
-if there are spaces, use quotes
+and if there are spaces, use quotes
 ```
 a=hello
 b=goodbye
@@ -163,7 +181,7 @@ echo $value
 
 ## command substitution
 
-use `\` \`` or `$( )` to replace a command with its output 
+use backticks `` `...` `` or `$( )` to replace a command with its output 
 
 ```
 `some_command` OR $(some_command)
