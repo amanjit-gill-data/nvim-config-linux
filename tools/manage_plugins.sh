@@ -8,6 +8,7 @@ log_file="$PWD/plugin_log"
 # $2 = --opt | nothing
 add_plugin() {
 
+  # decide which dir to install into
   if [ "$2" = "--opt" ]; then
     parent_dir=opt/
   elif [ -z $2 ]; then
@@ -16,9 +17,13 @@ add_plugin() {
     echo "Invalid option: $2"
     exit 1
   fi
+ 
+  # check if remote exists
+  check_remote $1
 
   dir=`basename $1 .git`
 
+  # check if plugin already installed
   if [ `repo_exists $dir` -ne 0 ]; then
     echo $dir already exists.
     exit 1
@@ -114,17 +119,30 @@ check_remote() {
   fi
 }
 
+# $1 = arg supplied to add/remove
+check_arg() {
+
+  if [ -z $1 ]; then
+    echo "Required argument missing."
+    exit 1
+  fi
+}
+
+# always start by ensuring plugin directories exist
+mkdir -p ${package_path}start ${package_path}opt
+
 # $1 = add|remove|update
 # $2 = repo_url|repo_dir  
 # $3 = --opt|nothing
 case $1 in
 
   add)
-    check_remote $2
+    check_arg $2
     add_plugin $2 $3
     ;;
 
   remove)
+    check_arg $2
     remove_plugin $2
     ;;
   
@@ -133,7 +151,7 @@ case $1 in
     ;;
 
   *)
-    echo "Invalid argument: $1"
+    echo "Required argument: add|remove|update."
 
 esac
 
