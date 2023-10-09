@@ -21,7 +21,7 @@ nightfly.normal.a.bg = new_colours.blue
 nightfly.insert.a.bg = new_colours.green
 nightfly.visual.a.bg = new_colours.violet
 
--- lualine doesn't have a config for command mode, so I define it myself
+-- lualine doesn't have a config for command mode; define it here
 nightfly.command = {
   a = {
     gui = "bold",
@@ -30,14 +30,14 @@ nightfly.command = {
   }
 }
 
-lualine.setup({
+lualine.setup ({
   options = {
     theme = nightfly
   },
   sections = {
     lualine_a = {'mode'},
     lualine_b = {'filename'},
-    lualine_c = {'diagnostics'},
+    lualine_c = {{'diagnostics', always_visible = false}},
 
     lualine_x = {'filetype'},
     lualine_y = {'progress'},

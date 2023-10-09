@@ -32,7 +32,6 @@ add_plugin() {
     echo `date` Install $dir into $parent_dir >> $log_file
     git clone --quiet $1 $package_path$parent_dir$dir &>> $log_file
     echo " done."
-    echo Check `basename $log_file` to confirm installation.
   fi
 } 
 
