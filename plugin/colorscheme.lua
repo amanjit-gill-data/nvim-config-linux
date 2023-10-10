@@ -5,6 +5,15 @@ if not status then
   return
 end
 
-vim.cmd.highlight('SignColumn', 'guibg=#070d12')
-vim.cmd.highlight('Normal', 'guibg=#070d12')
+-- set custom background
+vim.cmd.highlight('Normal', 'guibg=#121c26')
+
+-- remove background from gutter and line numbering so it always matches Normal
+vim.cmd.highlight('LineNr', 'guibg=NONE')
+
+-- change string colour to a less mustardy yellow
+vim.cmd.highlight('String', 'guifg=#ffdd88')
+
+
+
 
