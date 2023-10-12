@@ -6,9 +6,11 @@ local opt = vim.opt
 opt.shortmess = "I"
 
 -- line numbering
-
 opt.number = true
 opt.relativenumber = true
+
+-- always show column for git signs
+opt.signcolumn = "yes"
 
 -- 80-character indicator
 opt.colorcolumn = "80"
