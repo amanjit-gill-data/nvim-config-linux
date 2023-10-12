@@ -6,7 +6,7 @@ if not status then
 end
 
 -- source for custom bg and tints:
--- https://www.color-hex.com/color/0C0C17
+-- https://www.color-hex.com
 
 -- set custom bg
 vim.cmd.highlight('Normal', 'guibg=#181b1f')
