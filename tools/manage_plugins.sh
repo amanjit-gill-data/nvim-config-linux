@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-package_path="$HOME/AppData/Local/nvim-data/site/pack/third_party/"
+package_path="$HOME/AppData/Local/nvim-data/site/pack/git_plugins/"
 log_file="$PWD/plugin_log" 
 
 # if --opt, installs plugin into opt/; otherwise installs into start/

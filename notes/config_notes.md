@@ -1,6 +1,6 @@
 # notes on neovim config 
 
-these are just my rough notes, taken from the neovim documentation, on how neovim searches for and loads config files
+these are rough notes, taken from the neovim documentation, on how neovim searches for and loads config files
 
 ## arguments
 
@@ -166,7 +166,9 @@ how packer handles plugins:
 
 ## planning for new config 
 
-move filetype-specific plugins into ftplugin 
+install filetype-specific plugins into opt/
+
+then `require` or `packadd` it under ftplugin/
 
 implement lazy-loading where possible
 
@@ -178,8 +180,9 @@ packer seems to use a lot of startup time
 for lua config files:
 
 XDG_CONFIG_HOME/nvim/ 
-|-- init.lua 
-|-- plugin_manager.sh   <- to add new plugins and periodically update them
+|-- init.lua
+|-- tools
+|   |-- plugin_manager.sh   <- my own script to add/update/remove plugins
 |-- plugin/
 |   |-- these configs are automatically loaded
 |   |-- i'll put plugin configs here
@@ -205,16 +208,16 @@ XDG_DATA_HOME/nvim-data/site/pack/
 |   |   |-- plugin_dir2/
 
 i'll have two packages:
-- one for 'third party' plugins i obtain from others
+- one for plugins i clone from github
 - one for plugins i write myself
 
 - each plugin_dir is a git repo so i can easily update it 
-- i can use a bash script to update all the third-party plugins
+- i can use a bash script to update all the cloned github plugins
 - for my own plugins, i can maintain those git repos myself
 
 ### using git to manage plugins
 
-create plugin_manager.sh in XDG_CONFIG_HOME/nvim
+create plugin_manager.sh in XDG_CONFIG_HOME/nvim/tools
 
 to add a new plugin:
 
