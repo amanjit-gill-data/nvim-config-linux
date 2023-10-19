@@ -16,10 +16,12 @@ cmp.setup({
   },
 
   mapping = cmp.mapping.preset.insert({
+    ['<C-k>'] = cmp.mapping.select_prev_item(), -- highlight prev suggestion
+    ['<C-j>'] = cmp.mapping.select_next_item(), -- highlight next suggestion
     ['<C-b>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.abort(),
+    ['<C-Space>'] = cmp.mapping.complete(), -- show suggestions
+    ['<C-e>'] = cmp.mapping.abort(), -- close completion window
     ['<CR>'] = cmp.mapping.confirm({ select = true })
   }),
 
@@ -31,7 +33,7 @@ cmp.setup({
 
 })
 
--- set up cmdline completion 
+-- set up command completion 
 cmp.setup.cmdline(":", {
   
   mapping = cmp.mapping.preset.cmdline(),
@@ -52,4 +54,5 @@ cmp.setup.cmdline({"/", "?"}, {
      { name = "buffer" }
   }
 })
+
 
