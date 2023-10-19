@@ -76,6 +76,18 @@ update_plugins() {
   fi
 }
 
+# no arguments
+print_log() {
+
+  if [ -z $1 ]; then
+    less $log_file
+  else 
+    echo "Invalid argument provided."
+  fi
+}
+
+
+
 # $1 = parent_dir/repo_dir
 update_one() {
  
@@ -149,8 +161,12 @@ case $1 in
     update_plugins $2
     ;;
 
+  log)
+    print_log $2
+    ;;
+
   *)
-    echo "Required argument: add|remove|update."
+    echo "Required argument: add|remove|update|log."
 
 esac
 
