@@ -61,7 +61,7 @@ require()
 
 <https://neovim.io/doc/user/starting.html>
 
-1. enable filetype plugins and indent plugins 
+1. enable (not load) filetype plugins and indent plugins 
   - same as :runtime! ftplugin.vim indent.vim
 
 2. load system config: 
@@ -112,14 +112,14 @@ scripts to execute on demand
 ~/AppData/Local/nvim/ 
 |-- init.lua 
 |-- plugin/
-|   |-- auto_script.lua
+|   |-- some_script.lua
 |-- lua/
-|   |-- demand_script.lua
+|   |-- another_script.lua
 |   |-- some_folder/
 |       |-- nested_demand_script.lua 
 
-init.lua and auto_script.lua run automatically 
-to run demand_script.lua, require('demand_script')
+init.lua and some_script.lua run automatically 
+to run another_script.lua, require('demand_script')
 to run nested_demand_script, require('some_folder.nested_demand_script')
 
 ### require non-existent scripts or scripts with errors
@@ -169,8 +169,6 @@ how packer handles plugins:
 install filetype-specific plugins into opt/
 
 then `require` or `packadd` it under ftplugin/
-
-implement lazy-loading where possible
 
 install plugins without a plugin manager like packer 
 packer seems to use a lot of startup time 
