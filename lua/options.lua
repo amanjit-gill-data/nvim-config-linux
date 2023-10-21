@@ -32,13 +32,3 @@ opt.shiftwidth = 2	-- no. spaces for each autoindent step
 opt.splitright = true
 opt.splitbelow = true
 
--- treat hyphenated words as one word
-opt.iskeyword:append("-")
-
-
-
-
-
-
-
-

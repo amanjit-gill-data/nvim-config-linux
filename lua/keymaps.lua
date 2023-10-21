@@ -1,4 +1,6 @@
--- KEYMAPS CONFIG --
+-- GENERAL KEYMAPS --
+
+-- plugin-specific keymaps are located in the plugin configs 
 
 -- set leading character for custom keymaps to '\'
 vim.g.mapleader = "\\"
@@ -30,6 +32,10 @@ km.set("n", "<leader>to", ":tabnew<CR>") -- open new tab
 km.set("n", "<leader>tc", ":tabclose<CR>") -- close current tab
 km.set("n", "<leader>tn", ":tabn<CR>") --  go to next tab
 km.set("n", "<leader>tp", ":tabp<CR>") --  go to previous tab
+
+-- navigate to start of next paragraph
+-- assumes each paragraph is separated by a single line
+km.set("n", "<leader>np", "vip<Esc>jj")
 
 -- toggle b/w start/end of line
 -- press 0 to move to end of line
