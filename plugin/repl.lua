@@ -11,7 +11,7 @@ vim.g.repl_filetype_commands = {
 }
 
 vim.keymap.set('n', '<leader><leader>e', ':ReplToggle<CR>', { noremap = true })
-vim.keymap.set('n', '<leader>ec', ':ReplRunCell', { noremap = true })
+vim.keymap.set('n', '<leader>ec', ':ReplRunCell<CR>', { noremap = true })
 
 -- select paragraph (e.g. sql query, bash block, etc) and send to repl
 vim.keymap.set("n", "<leader>eq", "vip:ReplSendVisual<CR>")
