@@ -15,7 +15,14 @@ need:
 - `nvim-lspconfig`; contains lsp configurations for various languages
 - language servers like pyright, ruff-lsp, etc 
 
-could use `mason` to manage language servers, but i've chosen to install them myself, using conda, pip, etc 
+could use `mason` to manage language servers, but i've chosen to install them myself, using conda, pip, etc
+
+e.g.
+```
+conda install pyright 
+conda install texlab tectonic
+npm install -g bash-language-server (need to add to path)
+```
 
 ## 2. set up completion engine
 
