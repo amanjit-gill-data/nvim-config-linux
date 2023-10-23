@@ -7,7 +7,7 @@ vim.g.repl_default = "bash --login"
 
 vim.g.repl_filetype_commands = {
   python = 'ipython --no-autoindent',
-  sql = 'mysql -u ag -p'
+  sql = 'mariadb' -- auto login using credentials hidden elsewhere
 }
 
 vim.keymap.set('n', '<leader><leader>e', ':ReplToggle<CR>', { noremap = true })
