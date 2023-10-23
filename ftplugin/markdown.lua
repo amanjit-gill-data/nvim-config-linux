@@ -1,10 +1,16 @@
-function setup_paster()
-  vim.cmd('packadd clipboard-image.nvim')
-  require'clipboard-image'.setup()
+local status, _ = pcall(vim.cmd, "packadd clipboard-image.nvim")
+if status then
+  require('clipboard-image').setup {
+    markdown = {
+      img_dir = { "%:p:h", "images" }, -- actual path
+      img_dir_txt = { "images" }, -- path to show in markdown 
+      affix = '<img src="%s" width="500px">'
+    }
+  }
+  vim.cmd("command P PasteImg")
 end
 
--- protected call to set up clipboard plugin, but proceed with config if fails
-local status, _ = pcall(setup_paster)
+-- remaining config will continue even if plugin fails
 
 local opt = vim.opt
 
