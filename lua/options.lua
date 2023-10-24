@@ -5,6 +5,9 @@ local opt = vim.opt
 -- turn off nvim intro
 opt.shortmess = "I"
 
+-- avoid dos-style line endings
+vim.opt.fileformats = "unix"
+
 -- line numbering
 opt.number = true
 opt.relativenumber = true

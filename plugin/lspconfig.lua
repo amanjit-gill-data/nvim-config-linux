@@ -9,7 +9,6 @@ if not status then
 end
 
 -- KEYMAPS for lsp features
--- will only apply when a language server is attached
 
 local add_keymaps = function(bufnr)
 
@@ -49,13 +48,28 @@ local add_keymaps = function(bufnr)
 
 end
 
+-- GUTTER SIGNS for lsp diagnostics 
+
+function set_diag_symbols(bufnr)
+  
+  local err_types = { "Error", "Warn", "Hint", "Info" }
+
+  -- make all the gutter signs a coloured dot
+  for key, val in pairs(err_types) do
+    local sign_hl = "DiagnosticSign" .. val
+    vim.fn.sign_define(sign_hl, {text = "•", texthl = sign_hl})
+  end
+end
+
 -- SET UP language servers
 
 local capabilities = cmp_nvim_lsp.default_capabilities()
 
 on_attach = function(client, bufnr)
   add_keymaps(bufnr)
+  set_diag_symbols(bufnr)
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+  vim.diagnostic.config { underline = false }
 end
 
 lspconfig.pyright.setup {
