@@ -1,9 +1,8 @@
--- cmd is required for any repl to work on windows os
--- but cmd causes git-related error when nvim-tree is opened
--- therefore use powershell as default nvim shell
--- and use bash (invoked from powershell) as default repl
-vim.opt.shell = "cmd"
-vim.g.repl_default = "bash --login"
+-- nvim shell must be set to cmd for other shells to launch properly
+vim.opt.shell = 'cmd'
+
+-- bash is launched from powershell to prevent conda env-related errors 
+vim.g.repl_default = "powershell bash --login"
 
 vim.g.repl_filetype_commands = {
   python = 'ipython --no-autoindent',
