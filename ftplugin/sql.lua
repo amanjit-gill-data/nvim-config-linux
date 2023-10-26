@@ -9,3 +9,5 @@ if status1 and status2 then
   vim.cmd('DB g:db = mysql:')
 end
 
+-- remove 80-char column colour
+vim.opt.colorcolumn = ""

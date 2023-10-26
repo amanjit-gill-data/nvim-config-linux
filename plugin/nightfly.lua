@@ -12,7 +12,7 @@ end
 vim.cmd.highlight('Normal', 'guibg=#181b1f')
 
 -- set colour for 80-char column to a 'tint' of the custom bg
-vim.cmd.highlight('ColorColumn', 'guibg=#2f3135')
+vim.cmd.highlight('ColorColumn', 'guibg=#15181b')
 
 -- remove bg from gutter and line numbering so it always matches Normal
 -- set line numbering to a 'tint' of the custom bg
