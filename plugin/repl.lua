@@ -1,23 +1,21 @@
--- nvim shell must be set to cmd for other shells to launch properly
+-- nvim shell must be cmd for other shells to launch properly in winOS 
 vim.opt.shell = 'cmd'
 
--- bash is launched from powershell to prevent conda env-related errors 
-vim.g.repl_default = "powershell bash --login"
+-- launch bash through powershell to prevent conda init errors
+vim.g.repl_default = 'powershell bash --login'
 
 vim.g.repl_filetype_commands = {
   python = 'ipython --no-autoindent',
-  sql = 'mariadb' -- auto login using credentials hidden elsewhere
+  sql = 'mariadb'
 }
 
 vim.keymap.set('n', '<leader><leader>e', ':ReplToggle<CR>', { noremap = true })
 
--- cell marker is defined by repl as #%%
+-- cell marker is defined by repl as #%% or # %%
+vim.keymap.set("n", "nc", "i# %% ")
 vim.keymap.set('n', '<leader>ec', ':ReplRunCell<CR>', { noremap = true })
 
--- select paragraph (e.g. sql query, bash block, etc) and send to repl
--- move to next paragraph (assumes separated by a single empty line)
+-- send paragraph (e.g. sql query, bash block) to repl
+-- then move to next paragraph (assume separated by a single empty line)
 vim.keymap.set("n", "<leader>eq", "vip:ReplSendVisual<CR>vip<Esc>jj")
-
-
-
 

@@ -28,7 +28,7 @@ cmp.setup({
   sources = cmp.config.sources({
     { name = "nvim_lsp" }, -- from language servers
     { name = "buffer" },
-    { name = "path", option = { trailing_slash = true }},
+    { name = "path", option = { trailing_slash = true }}
   })
 
 })
