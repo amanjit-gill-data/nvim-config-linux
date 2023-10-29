@@ -8,8 +8,7 @@ if status1 and status2 then
   
   cmp.setup.buffer({ 
     sources = {
-      { name = 'vim-dadbod-completion' },
-      { name = 'buffer' }
+      { name = 'vim-dadbod-completion' }
     } 
   })
   
