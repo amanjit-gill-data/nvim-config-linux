@@ -7,11 +7,15 @@ vim.g.mapleader = "\\"
 
 local km = vim.keymap
 
--- move directly up/down even when word wrap is on
-km.set("n", "j", "gj")
-km.set("n", "k", "gk")
-km.set("n", "<Down>", "gj")
-km.set("n", "<Up>", "gk")
+-- move directly up/down even when line is broken due to word wrap
+-- then re-position line to centre of window
+km.set("n", "j", "gjzz")
+km.set("n", "k", "gkzz")
+km.set("n", "<Down>", "gjzz")
+km.set("n", "<Up>", "gkzz")
+
+-- jump to last line, then re-position it to middle of window
+km.set("n", "G", "Gzz")
 
 -- navigate to start of next paragraph
 -- assumes each paragraph is separated by a single line
