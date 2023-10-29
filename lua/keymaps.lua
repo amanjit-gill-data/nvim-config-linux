@@ -7,13 +7,15 @@ vim.g.mapleader = "\\"
 
 local km = vim.keymap
 
--- move directly up/down even when word wrap is on 
+-- move directly up/down even when word wrap is on
 km.set("n", "j", "gj")
 km.set("n", "k", "gk")
 km.set("n", "<Down>", "gj")
 km.set("n", "<Up>", "gk")
-km.set("n", "gj", "j")
-km.set("n", "gk", "k")
+
+-- navigate to start of next paragraph
+-- assumes each paragraph is separated by a single line
+km.set("n", "<leader>np", "vip<Esc>jj")
 
 -- delete single character without saving it to clipboard
 km.set("n", "x", '"_x')
@@ -33,14 +35,9 @@ km.set("n", "<leader>tc", ":tabclose<CR>") -- close current tab
 km.set("n", "<leader>tn", ":tabn<CR>") --  go to next tab
 km.set("n", "<leader>tp", ":tabp<CR>") --  go to previous tab
 
--- navigate to start of next paragraph
--- assumes each paragraph is separated by a single line
-km.set("n", "<leader>np", "vip<Esc>jj")
-
 -- toggle b/w start/end of line
 -- press 0 to move to end of line
 -- press again to move to start of line
-
 function LineStartEnd()
   r, c = unpack(vim.api.nvim_win_get_cursor(0))
   line_length = vim.fn.col('$') - 1
@@ -53,7 +50,4 @@ function LineStartEnd()
 end
 
 km.set("n", "0", ":lua LineStartEnd()<CR>") 
-
-
-
 

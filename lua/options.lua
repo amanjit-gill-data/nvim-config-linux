@@ -27,6 +27,7 @@ opt.clipboard:append("unnamedplus")
 
 -- indentation
 opt.autoindent = true 	-- copy indent of prev line
+opt.smartindent = true
 opt.expandtab = true	-- turn tab into spaces
 opt.tabstop = 2		-- no. spaces for each tab step 
 opt.shiftwidth = 2	-- no. spaces for each autoindent step
