@@ -5,17 +5,18 @@ vim.opt.shell = 'cmd'
 vim.g.repl_default = 'powershell bash --login'
 
 vim.g.repl_filetype_commands = {
-  python = 'ipython --no-autoindent',
+  python = 'ipython', -- no-autoindent is already set in ipython config 
   sql = 'mariadb'
 }
 
+vim.cmd("command PySpark ReplOpen pyspark")
+
 vim.keymap.set('n', '<leader><leader>e', ':ReplToggle<CR>', { noremap = true })
 
--- cell marker is defined by repl as #%% or # %%
+-- cell marker is defined by repl as # %%
 vim.keymap.set("n", "nc", "i# %% ")
 vim.keymap.set('n', '<leader>ec', ':ReplRunCell<CR>', { noremap = true })
 
 -- send paragraph (e.g. sql query, bash block) to repl
--- then move to next paragraph (assume separated by a single empty line)
-vim.keymap.set("n", "<leader>eq", "vip:ReplSendVisual<CR>vip<Esc>jj")
+vim.keymap.set("n", "<leader>eq", "vip:ReplSendVisual<CR>")
 
