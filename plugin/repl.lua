@@ -6,7 +6,8 @@ vim.g.repl_default = 'powershell bash --login'
 
 vim.g.repl_filetype_commands = {
   python = 'ipython', -- no-autoindent already set in ipython config 
-  sql = 'mariadb'
+  sql = 'mariadb',
+  hql = "work; cd ..; ./hadoop_helper.sh run 'cd bdm/week6; hive'"
 }
 
 vim.cmd("command PySpark ReplOpen pyspark")
@@ -14,7 +15,7 @@ vim.cmd("command PySpark ReplOpen pyspark")
 vim.keymap.set('n', '<leader><leader>e', '<Cmd>ReplToggle<CR>', { noremap = true })
 
 -- cell marker is defined by repl as # %%
-vim.keymap.set("n", "nc", "i<CR># %%<CR>")
+vim.keymap.set("n", "nc", "i# %%<CR>")
 vim.keymap.set('n', "<leader>ec", "<Plug>ReplSendCell")
 
 -- send line (e.g. pyspark method) to repl 
