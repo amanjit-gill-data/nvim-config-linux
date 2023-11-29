@@ -6,8 +6,7 @@ vim.g.repl_default = 'powershell bash --login'
 
 vim.g.repl_filetype_commands = {
   python = 'ipython', -- no-autoindent already set in ipython config 
-  sql = 'mariadb',
-  hql = "work; cd ..; ./hadoop_helper.sh run 'cd bdm/week6; hive'"
+  sql = 'mariadb'
 }
 
 vim.cmd("command PySpark ReplOpen pyspark")

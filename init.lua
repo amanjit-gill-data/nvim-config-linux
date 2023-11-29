@@ -1,3 +1,5 @@
+-- NVIM INITIALISATION --
+
 require('keymaps')
 require('options')
 
@@ -7,4 +9,10 @@ vim.cmd("command Term terminal powershell bash --login")
 vim.api.nvim_create_autocmd({"BufEnter", "WinEnter", "WinNew", "VimResized"}, {
   pattern = {"*.*"},
   command = "let &scrolloff=winheight(win_getid())/3"
+})
+
+vim.filetype.add({
+  extension = {
+    hql = 'hiveql'
+  }
 })
