@@ -1,5 +1,8 @@
 -- Config for Hive QL scripts --
 
+-- use sql auto-capitalisation of reserved words 
+require('sql_caps')
+
 -- use sql highlighting for hiveql 
 vim.treesitter.language.register("sql", "hiveql")
 
