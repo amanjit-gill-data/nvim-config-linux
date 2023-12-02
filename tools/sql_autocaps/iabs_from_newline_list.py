@@ -5,8 +5,7 @@ import sys
 
 # %%
 
-
-def create_iab_commands(infile: str, outfile: str) -> None:
+def iabs_from_newline_list(infile: str, outfile: str) -> None:
 
     spark = SparkSession(SparkContext("local", "create_iabs"))
 
@@ -24,7 +23,7 @@ def create_iab_commands(infile: str, outfile: str) -> None:
 
 # %%
 
-create_iab_commands(sys.argv[1], sys.argv[2])
+iabs_from_newline_list(sys.argv[1], sys.argv[2])
 
 # %%
 

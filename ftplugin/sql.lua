@@ -19,3 +19,4 @@ vim.g.sql_type_default = "mysql"
 
 -- remove 80-char column colour
 vim.opt.colorcolumn = ""
+

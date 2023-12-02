@@ -14,7 +14,8 @@ vim.cmd("command PySpark ReplOpen pyspark")
 vim.keymap.set('n', '<leader><leader>e', '<Cmd>ReplToggle<CR>', { noremap = true })
 
 -- cell marker is defined by repl as # %%
-vim.keymap.set("n", "nc", "i# %%<CR>")
+vim.cmd("iab nc # %%")
+
 vim.keymap.set('n', "<leader>ec", "<Plug>ReplSendCell")
 
 -- send line (e.g. pyspark method) to repl 
