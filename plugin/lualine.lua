@@ -30,6 +30,11 @@ nightfly.command = {
   }
 }
 
+-- define wordcount function to include in status bar 
+function word_count()
+  return tostring(vim.fn.wordcount().words .. " words")
+end 
+
 lualine.setup ({
   options = {
     theme = nightfly
@@ -39,7 +44,7 @@ lualine.setup ({
     lualine_b = {'filename'},
     lualine_c = {{'diagnostics', always_visible = false}},
 
-    lualine_x = {'filetype'},
+    lualine_x = {'filetype', word_count},
     lualine_y = {'progress'},
     lualine_z = {'location'},
   }
