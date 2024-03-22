@@ -36,5 +36,8 @@ opt.shiftwidth = 2	-- no. spaces for each autoindent step
 opt.splitright = true
 opt.splitbelow = true
 
--- enable markdown folding 
+-- folding 
+vim.foldmethod = "expr"
+vim.foldexpr = "nvim_treesitter#foldexpr()"
 vim.g.markdown_folding = 1
+
