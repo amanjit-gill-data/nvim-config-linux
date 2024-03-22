@@ -6,7 +6,7 @@ local opt = vim.opt
 opt.shortmess = "I"
 
 -- avoid dos-style line endings
-vim.opt.fileformats = "unix"
+opt.fileformats = "unix"
 
 -- line numbering
 opt.number = true
@@ -36,3 +36,5 @@ opt.shiftwidth = 2	-- no. spaces for each autoindent step
 opt.splitright = true
 opt.splitbelow = true
 
+-- enable markdown folding 
+vim.g.markdown_folding = 1
