@@ -37,7 +37,9 @@ opt.splitright = true
 opt.splitbelow = true
 
 -- folding 
-vim.foldmethod = "expr"
-vim.foldexpr = "nvim_treesitter#foldexpr()"
-vim.g.markdown_folding = 1
+opt.foldmethod = "expr"
+opt.foldexpr = "nvim_treesitter#foldexpr()"
+opt.foldenable = false -- folds should initially be open 
+
+vim.g.markdown_folding = 1 -- enable markdown folding 
 
