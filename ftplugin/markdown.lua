@@ -4,7 +4,7 @@ if status then
     markdown = {
       img_dir = { "%:p:h", "images" }, -- actual path
       img_dir_txt = { "images" }, -- path to show in markdown 
-      affix = '<img src="%s" width="500px">'
+      affix = '<img src="%s">' 
     }
   }
   vim.cmd("command P PasteImg")
