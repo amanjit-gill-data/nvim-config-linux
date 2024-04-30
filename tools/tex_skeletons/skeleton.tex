@@ -1,0 +1,15 @@
+\documentclass{article}
+
+\usepackage[citestyle=authoryear-ibid, backend=biber]{biblatex}
+\renewcommand*{\nameyeardelim}{\addcomma\space}
+\addbibresource{skeleton.bib}
+
+\begin{document}
+
+This is a document.
+
+\textcite{some_webpage, some_article}
+
+\printbibliography
+
+\end{document}

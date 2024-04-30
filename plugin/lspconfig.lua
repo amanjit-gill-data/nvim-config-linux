@@ -83,15 +83,11 @@ lspconfig.texlab.setup {
   settings = {
     texlab = {
       build = {
-        executable = "tectonic",
+        executable = "texify",
         args = {
-          "-X",
-          "compile",
           "%f",
-          "--keep-logs",
-          "--keep-intermediates"
-        },
-        onSave = true
+          "--pdf"
+        }
       }
     }
   }
