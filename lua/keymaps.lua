@@ -1,6 +1,6 @@
 -- GENERAL KEYMAPS --
 
--- plugin-specific keymaps are located in the plugin configs 
+-- plugin-specific keymaps are located in the plugin configs
 
 -- set leading character for custom keymaps to '\'
 vim.g.mapleader = "\\"
@@ -42,14 +42,16 @@ km.set("n", "<leader>tp", ":tabp<CR>") --  go to previous tab
 -- press 0 to move to end of line
 -- press again to move to start of line
 function LineStartEnd()
+
   r, c = unpack(vim.api.nvim_win_get_cursor(0))
   line_length = vim.fn.col('$') - 1
 
-  if c+1 ~= line_length then
-    vim.api.nvim_win_set_cursor(0, {r, line_length})
-  else 
+  if c ~= 0 then
     vim.api.nvim_win_set_cursor(0, {r, 0})
+  else 
+    vim.api.nvim_win_set_cursor(0, {r, line_length})
   end 
+
 end
 
 km.set("n", "0", ":lua LineStartEnd()<CR>") 
