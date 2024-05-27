@@ -34,18 +34,18 @@
 **packages**
 
 I'll have two packages:
-    - third_party, for plugins from github
-    - homemade, for plugins I write myself
+    - github, for plugins from github
+    - mine, for plugins I write myself
 
 so the high-level structure will look like:
 
 ~/.local/share/nvim/site/pack/
-|-- third_party
-|-- homemade/
+|-- github/
+|-- mine/
 
 **strategy for plugins from github**
 
-- each plugin under third_party/ is a cloned git repo
+- each plugin under github/ is a cloned git repo
 - I'll use a bash script to install, update and delete
 
 **strategy for filetype-specific plugins**
