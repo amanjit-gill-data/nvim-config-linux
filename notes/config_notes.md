@@ -1,115 +1,192 @@
 # notes on neovim config 
 
-these are rough notes, taken from the neovim documentation, on how neovim searches for and loads config files
+## my setup
 
-## arguments
+### user configs
 
-nvim _file1_ _file2_ _file3_
+~/.config/nvim/ 
+|-- init.lua
+|-- plugin/
+|   |-- these configs are automatically loaded
+|   |-- i'll put plugin configs here
+|-- lua/
+|   |-- these configs need to be required by init.lua
+|   |-- i'll put general configs here
+|-- tools
+|   |-- plugin_manager.sh
+
+### installing plugins
+
+**overall structure**
+
+- can choose anywhere on packpath
+- I've chosen ~/.local/share/nvim/site/pack, which is the norm
+
+~/.local/share/nvim/site/pack/
+|-- package-name/
+|   |-- start/              for startup plugins
+|   |   |-- plugin1/        
+|   |   |-- plugin2/
+|   |-- opt/                for on-demand plugins
+|   |   |-- plugin3/        
+|   |   |-- plugin4/
+
+**packages**
+
+I'll have two packages:
+    - third_party, for plugins from github
+    - homemade, for plugins I write myself
+
+so the high-level structure will look like:
+
+~/.local/share/nvim/site/pack/
+|-- third_party
+|-- homemade/
+
+**strategy for plugins from github**
+
+- each plugin under third_party/ is a cloned git repo
+- I'll use a bash script to install, update and delete
+
+**strategy for filetype-specific plugins**
+
+if I'm not editing a particular filetype, there's no need to load its plugins
+    - therefore, install filetype-specific plugins into opt/
+    - then `require` or `packadd` it under ftplugin/
+
+## how configs and startup work in neovim
+
+### startup options
+
+`nvim _file1_ _file2_ _file3_`
 - open several buffers
 
-nvim --clean
+`nvim --clean`
 - mimic fresh install
 
-nvim --startuptime _logfile_
+`nvim --startuptime _logfile_`
 - write startup timings to _logfile_ 
 
-## relevant variables
+### environment variables
 
 $EXINIT
-- not defined 
+- not set
 
 $VIM
-- C:/Program Files/Neovim/share/nvim 
+- used to locate user files such as config
+- /opt/nvim-linux64/share/nvim
 
 $VIMINIT
-- not defined 
+- not set
 
 $VIMRUNTIME
-- C:/Program Files/Neovim/share/nvim/runtime
-
-$XDG_CONFIG_DIRS
-- list of dirs
-- not defined 
+- used to locate support files such as docs and syntax highlighting rules
+- these are distributed with nvim
+- /opt/nvim-linux64/share/nvim/runtime
 
 $XDG_CONFIG_HOME
-- ~/AppData/Local
+- to locate user config
+- if not set, stdpath("config") is used
+- ~/.config/nvim
 
-runtimepath
-- $XDG_CONFIG_HOME/nvim                     
-- $XDG_CONFIG_DIRS[1,2,...]/nvim            - not defined
-- $XDG_DATA_HOME/nvim[-data]/site           - not defined
-- $XDG_DATA_DIRS[1,2,...]/nvim/site         - not defined
-- $VIMRUNTIME
-- $XDG_DATA_DIRS[1,2,...]/nvim/site/after   - not defined 
-- $XDG_DATA_HOME/nvim[-data]/site/after     - not defined
-- $XDG_CONFIG_DIRS[1,2,...]/nvim/after      - not defined 
-- $XDG_CONFIG_HOME/nvim/after
+$XDG_CONFIG_DIRS
+- config location required by XDG specification
+- can also put site configs from sysadmin here
+- if not set, stdpath("config_dirs") is used
+- list of dirs
+- /etc/xdg/xdg-zorin
+- /etc/xdg
 
-## relevant functions or commands
+$XDG_DATA_HOME
+- to locate plugins installed by user
+- if not set, stdpath("data") is used 
+- ~/.local/share/nvim
 
-require()
-- loads and executes file
-- avoids executing file twice
+$XDG_DATA_DIRS
+- to locate plugins installed by sysadmin
+- if not set, stdpath("data_dirs") is used
+- list of dirs 
+- I won't need this, so I haven't listed the dirs here
 
-:runtime! {file}
-- sources _all_ occurrences of {file} in runtimepath 
+### functions and commands
 
-:echo &rtp
-- prints out runtimepath
+`require()`
+- load and executes file
+- avoid executing file twice
 
-## initialisation
+`:runtime! <filename>`
+- source _all_ occurrences of <filename> in runtimepath 
+
+`:echo &rtp` or `:echo &runtimepath`
+- print runtimepath
+- if nvim was invoked with `--clean`, then my home dir entries won't be listed
+
+`:echo &packpath`
+- print packpath
+- default is same as runtimepath
+
+`:echo stdpath("config")`
+- print default user config dir
+
+### initialisation
 
 <https://neovim.io/doc/user/starting.html>
 
 1. enable (not load) filetype plugins and indent plugins 
-  - same as :runtime! ftplugin.vim indent.vim
+  - same as `:runtime! ftplugin.vim indent.vim`
 
 2. load system config: 
-  - $VIM/sysinit.vim (file doesn't exist)
+  - $VIM/sysinit.vim (doesn't exist)
 
 3. look for initialisations in:
-  - $VIMINIT (doesn't exist)
-  - $XDG_CONFIG_HOME/nvim/init.lua 
-  - $XDG_CONFIG_DIRS[1,2,...]/nvim/init.lua (doesn't exist)
-  - $EXINIT (doesn't exist)
+  - $VIMINIT (not set)
+  - $XDG_CONFIG_HOME/nvim/init.lua OR ~/.config/nvim/init.lua if not set
+  - $XDG_CONFIG_DIRS/[some-dir]/nvim/init.lua (doesn't exist)
+  - $EXINIT (not set)
 
 7. enable filetype detection
-  - same as :runtime! filetype.lua
+  - same as `:runtime! filetype.lua`
 
 8. enable syntax highlighting unless :syntax off
-  - same as :runtime! syntax/syntax.vim
+  - same as `:runtime! syntax/syntax.vim`
   - with treesitter highlighting, this would be off 
 
 9. load plugin scripts
-  - same as :runtime! plugin/**/*.{vim,lua}
+  - in nvim, 'plugin' just means extra scripts added by user
+  - same as `:runtime! plugin/**/*.{vim,lua}`
   - check dirs in runtimepath for 'plugin' dirs
   - in each 'plugin' dir and each sub-dir (except for sub-dirs called '*after'):
     - source .vim files in alpha order
     - then source .lua files in alpha order
 
 10. load packages 
-  - these contain plugins located in each 'start' dir of 'packpath'
+  - in nvim, 'package' is a directory containing plugins (extra scripts) 
+  - check each 'start' dir in 'packpath'
   - packpath default value is same as runtimepath
 
 11. source the files in the '*after' dirs 
 
-## loading lua files on startup 
+### how nvim loads user configs 
 
 <https://neovim.io/doc/user/lua-guide.html#lua-guide-config>
 
-initial configuration
-- init.lua in ~/AppData/Local/nvim/ i.e. $XDG_CONFIG_HOME/nvim 
+<https://neovim.io/doc/user/options.html#'runtimepath'>
 
-scripts to execute automatically 
-- in plugin/ on runtimepath 
+initial configuration
+- ~/.config/nvim/init.lua
+
+scripts to execute automatically i.e. without me explicitly 'requiring' them
+- in plugin/ on runtimepath
+- ~/.config/nvim/plugin/
 
 scripts to execute on demand
 - in lua/ on runtimepath
 - then load with require()
+- ~/.config/nvim/lua/
 
-### example
+**example**
 
-~/AppData/Local/nvim/ 
+~/.config/nvim
 |-- init.lua 
 |-- plugin/
 |   |-- some_script.lua
@@ -118,15 +195,16 @@ scripts to execute on demand
 |   |-- some_folder/
 |       |-- nested_demand_script.lua 
 
-init.lua and some_script.lua run automatically 
-to run another_script.lua, require('demand_script')
-to run nested_demand_script, require('some_folder.nested_demand_script')
+- init.lua and some_script.lua run automatically 
+- to run another_script.lua, require('demand_script')
+- to run nested_demand_script, require('some_folder.nested_demand_script')
 
-### require non-existent scripts or scripts with errors
+**non-existent scripts or scripts with errors**
 
-calling script is aborted
-prevent this by using pcall to make a protected call
+- calling script is aborted with error, then startup continues
+- can prevent this by using pcall to make a protected call
 
+```
 local ok, some_module = pcall(require, 'bad_module')
 if not ok then
   print("Module error")
@@ -134,103 +212,28 @@ else
   // use the module e.g. call one of its functions
   some_module.function()
 end
+```
 
-## types of plugins
+### types of plugins
+
 <https://neovim.io/doc/user/usr_05.html#add-plugin>
 
-1. global:
+**global**
 - $VIMRUNTIME/macros
 - $VIM/vimfiles/pack/dist/opt
 - $VIMRUNTIME/plugin
 - can add new ones to plugin/, somewhere in runtimepath
 - can also put them into a package, which is what packer does
 
-### packages
+**packages**
 
 <https://neovim.io/doc/user/repeat.html#packages>
 
-a package is just a directory that contains plugins
-packages are found in pack/, somewhere in runtimepath
+- a package is just a directory that contains plugins
+- packages are found in pack/, anywhere on packpath
+    - pack/packagename/start contains plugins to load at startup
+    - pack/packagename/opt contains plugins to load on demand using :packadd
 
-- pack/packagename/start contains plugins to load at startup
-- pack/packagename/opt contains plugins to load on demand using :packadd
-
-how packer handles plugins:
-
-- packer creates one package, called packer, at 
-~/AppData/Local/nvim-data/site/pack/packer
-
-- as required by neovim, this package contains start/ and /opt directories
-
-- when i add a plugin, packer puts it into packer/start 
-
-## planning for new config 
-
-install filetype-specific plugins into opt/
-
-then `require` or `packadd` it under ftplugin/
-
-install plugins without a plugin manager like packer 
-packer seems to use a lot of startup time 
-
-### structure
-
-for lua config files:
-
-XDG_CONFIG_HOME/nvim/ 
-|-- init.lua
-|-- tools
-|   |-- plugin_manager.sh   <- my own script to add/update/remove plugins
-|-- plugin/
-|   |-- these configs are automatically loaded
-|   |-- i'll put plugin configs here
-|-- lua/
-|   |-- these configs need to be required by init.lua
-|   |-- i'll put general configs here
-
-for plugins:
-
-- runtimepath includes XDG_DATA_HOME/nvim-data/site
-- XDG_DATA_HOME is not defined 
-- so if i set XDG_DATA_HOME to ~/AppData/Local,
-- and put a package into ~/AppData/Local/nvim-data/site/pack/,
-- then neovim will find the package and load the plugins it contains
-
-XDG_DATA_HOME/nvim-data/site/pack/
-|-- package_name/
-|   |-- start/              <- for startup plugins
-|   |   |-- plugin_dir1/    <- each plugin goes into its own folder
-|   |   |-- plugin_dir2/
-|   |-- opt/                <- for on-demand plugins
-|   |   |-- plugin_dir1/    <- each plugin goes into its own folder
-|   |   |-- plugin_dir2/
-
-i'll have two packages:
-- one for plugins i clone from github
-- one for plugins i write myself
-
-- each plugin_dir is a git repo so i can easily update it 
-- i can use a bash script to update all the cloned github plugins
-- for my own plugins, i can maintain those git repos myself
-
-### using git to manage plugins
-
-create plugin_manager.sh in XDG_CONFIG_HOME/nvim/tools
-
-to add a new plugin:
-
-```
-./plugin_manager add <plugin_name> [--opt]
-```
-- by default, install into start/
-- can optionally specify opt/
-
-to update a plugin:
-
-```
-./plugin_manager update [plugin_name]...  
-```
-- by default, update all plugins
-- can optionally specify one or more plugins
+- the norm is `~/.local/share/nvim/site/`
 
 
