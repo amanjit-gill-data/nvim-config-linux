@@ -83,11 +83,8 @@ lspconfig.texlab.setup {
   settings = {
     texlab = {
       build = {
-        executable = "texify",
-        args = {
-          "%f",
-          "--pdf"
-        }
+        executable = "tectonic",
+        args = { "%f" }
       }
     }
   }
@@ -96,7 +93,7 @@ lspconfig.texlab.setup {
 lspconfig.bashls.setup {
   capabilities = capabilities,
   on_attach = on_attach,
-  cmd = { "bash-language-server.cmd", "start" },
+  cmd = { "bash-language-server", "start" },
   root_dir = function(fname)
     return vim.loop.cwd()
   end
