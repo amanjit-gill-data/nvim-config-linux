@@ -19,47 +19,57 @@ could use `mason` to manage language servers, but i've chosen to install them my
 
 ### pyright
 
-1. install node
+install pyright outside of a project env, as it can be used with different versions of python
 
-I'm installing this system-wide, not within the python env, because:
-- pyright doesn't need a specific version; just needs to be recent enough
-- node is also used to compile some tree-sitter parsers
+1. install node - pyright dependency
+
+install this system-wide because:
+- pyright doesn't need a specific version of node; just needs to be recent enough
+- can use it for other things
+- e.g. the latex parser for tree-sitter is compiled using node 
 
 version in apt is too old; download binary from node website instead:
 - download binary from https://nodejs.org/en/download/prebuilt-binaries
 - extract and put under `/opt/`
 - ensure `node` is on path
 
-2. install pyright
+2. install pipx - to obtain pyright 
 
-I'm putting pyright in the python env it will be used for, in case different python versions need different pyrights (not sure)
+- pipx installs packages in isolated envs to avoid interfering with system python
+- often used for CLI tools like pyright that can be used for multiple projects
 
 ```
-source venv_name/bin/activate       first make sure env is activated
-pip install pyright         
+sudo apt install pipx           using apt should ensure that pipx and all its 
+                                dependencies don't interfere with system python 
+
+pipx ensurepath                 adds ~/.local/bin/ to path 
+                                this is where pipx symlinks to installed binaries
+```
+
+3. install pyright
+
+```
+pipx install pyright            installs into ~/.local/pipx/venvs/ 
+                                creates symlink in ~/.local/bin/ 
 ```
 
 ### texlab
 
-I'm setting this up centrally, because:
+I'm setting this up globally, because:
 - I'm going to use the same tex distribution for all projects
 - The distribution gets very big with all the packages; mitigating the risk of breaking previous projects isn't worth the disk space of separate copies
 
 1. install a typsetting system; I chose tectonic
 
 - download precompiled binary 
-- extract and put under `/opt/`
+- extract and put under `/opt/tectonic`
 - ensure `tectonic` is on path
 
 2. install texlab 
 
 - download precompiled binary 
-- extract and put under `/opt/`
+- extract and put under `/opt/texlab`
 - ensure `texlab` is on path
-
-### bash-language-server
-
-
 
 ## set up completion engine
 
