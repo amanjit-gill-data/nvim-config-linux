@@ -8,7 +8,7 @@ if not status then
   return
 end
 
--- set up general completion i.e. within buffer 
+-- set up editor completion
 cmp.setup({
 
   snippet = {
@@ -33,7 +33,7 @@ cmp.setup({
 
 })
 
--- set up command completion 
+-- set up command-line completion 
 cmp.setup.cmdline(":", {
   
   mapping = cmp.mapping.preset.cmdline(),
