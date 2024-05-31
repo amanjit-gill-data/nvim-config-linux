@@ -90,12 +90,11 @@ lspconfig.texlab.setup {
   }
 }
 
-lspconfig.bashls.setup {
+lspconfig.r_language_server.setup {
   capabilities = capabilities,
-  on_attach = on_attach,
-  cmd = { "bash-language-server", "start" },
-  root_dir = function(fname)
-    return vim.loop.cwd()
+  on_attach = function(client, bufnr)
+    on_attach(client, bufnr)
+    client.server_capabilities.completionProvider = false 
   end
 }
 
