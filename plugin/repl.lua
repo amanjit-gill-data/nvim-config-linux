@@ -1,5 +1,7 @@
+-- assumes ipython is installed to active env
 vim.g.repl_filetype_commands = {
-  python = 'ipython',
+  python = 'ipython3 --no-autoindent',
+  r = 'R'
 }
 
 vim.keymap.set('n', '<leader><leader>e', '<Cmd>ReplToggle<CR>', { noremap = true })
