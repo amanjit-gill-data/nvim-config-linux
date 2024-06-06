@@ -41,16 +41,14 @@ version in apt is too old; download binary from node website instead:
 ```
 sudo apt install pipx           using apt should ensure that pipx and all its 
                                 dependencies don't interfere with system python 
-
-pipx ensurepath                 adds ~/.local/bin/ to path 
-                                this is where pipx symlinks to installed binaries
 ```
 
 3. install pyright
 
 ```
-pipx install pyright            installs into ~/.local/pipx/venvs/ 
-                                creates symlink in ~/.local/bin/ 
+pipx install pyright            by default, pipx installs into ~/.local/pipx/venvs/ 
+                                creates symlink in ~/.local/bin/, which is already
+                                on path (bash adds it to path if it exists)
 ```
 
 ### texlab
@@ -62,14 +60,33 @@ I'm setting this up globally, because:
 1. install a typsetting system; I chose tectonic
 
 - download precompiled binary 
-- extract and put under `/opt/tectonic`
+- extract and put under `/opt/latex/tectonic`
 - ensure `tectonic` is on path
 
 2. install texlab 
 
 - download precompiled binary 
-- extract and put under `/opt/texlab`
+- extract and put under `/opt/latex/texlab`
 - ensure `texlab` is on path
+
+### R 
+
+R's language server is an R package. I only need it for linting; I use the `cmp-r` plugin for completions because it completes column names from dataframes.
+
+1. install system dependencies 
+
+```
+sudo apt install --no-install-recommends build-essential libcurl4-openssl-dev libssl-dev libxml2-dev
+```
+
+2. install language server into global site packages so it's available for any project 
+
+```
+sudo -i /opt/R/4.4.0/bin/R          run R as root
+                                    otherwise can't install packages globally
+
+install.packages("languageserver")
+```
 
 ## set up completion engine
 
@@ -82,5 +99,6 @@ sources:
 - `cmp-buffer`
 - `cmp-path`
 - `cmp-cmdline` 
+- `cmp-r`
 
 
