@@ -22,3 +22,8 @@ opt.linebreak = true
 
 -- remove 80-char column colour
 opt.colorcolumn = ""
+
+-- turn on spellcheck
+opt.spell = true
+opt.spelllang = "en_au"
+
