@@ -79,14 +79,14 @@ R's language server is an R package. I only need it for linting; I use the `cmp-
 sudo apt install --no-install-recommends build-essential libcurl4-openssl-dev libssl-dev libxml2-dev
 ```
 
-2. install language server into global site packages so it's available for any project 
+2. install language server into user packages so it's available for any project:
 
 ```
-sudo -i /opt/R/4.4.0/bin/R          run R as root
-                                    otherwise can't install packages globally
-
-install.packages("languageserver")
+install.packages("languageserver")      
 ```
+
+note: do this for every version of R that is installed
+
 
 ## set up completion engine
 
