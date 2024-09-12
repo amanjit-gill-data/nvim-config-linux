@@ -12,3 +12,8 @@ opt.linebreak = true
 opt.colorcolumn = ""
 
 vim.cmd("command TB TexlabBuild")
+
+-- turn on spellcheck
+opt.spell = true
+opt.spelllang = "en_au"
+
