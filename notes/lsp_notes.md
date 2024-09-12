@@ -57,17 +57,33 @@ I'm setting this up globally, because:
 - I'm going to use the same tex distribution for all projects
 - The distribution gets very big with all the packages; mitigating the risk of breaking previous projects isn't worth the disk space of separate copies
 
-1. install a typsetting system; I chose tectonic
+1. install tectonic, a latex distribution
 
-- download precompiled binary 
-- extract and put under `/opt/latex/tectonic`
-- ensure `tectonic` is on path
+- download `tectonic` binary 
+- extract and put under `/opt/latex` 
+- ensure it's on path 
 
-2. install texlab 
+2. install biber, to allow tectonic to insert citations and create bibliography
 
-- download precompiled binary 
-- extract and put under `/opt/latex/texlab`
-- ensure `texlab` is on path
+- go to https://sourceforge.net/projects/biblatex-biber/
+- download `biber` binary 
+- extract and put under `/opt/latex/` 
+- ensure it's on path
+
+3. test by compiling a latex document 
+
+- ensure the latex document contains `\usepackage{biblatex}`
+- `tectonic filename.tex` 
+- if biber version is incompatible with tectonic's version of biblatex:
+    - go back to sourceforge site and open biber.pdf 
+    - check compatibility matrix to see which version of biber is needed
+    - install that version instead, and re-test
+
+4. install texlab
+
+- download `texlab` binary 
+- extract and put under `/opt/latex`
+- ensure it's on path
 
 ### R 
 
